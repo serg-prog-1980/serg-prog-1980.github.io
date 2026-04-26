@@ -1,2 +1,2 @@
-# serg-prog-1980.github.io
+# tin-gali.github.io
 Site for Valentyn Artist

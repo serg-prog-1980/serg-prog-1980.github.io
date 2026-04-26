@@ -979,6 +979,7 @@ function goTo(n) {
   document.getElementById('testimonialSlides').style.transform = `translateX(-${tCurrent*100}%)`;
   document.querySelectorAll('.t-dot').forEach((d,i) => d.classList.toggle('active', i===tCurrent));
 }
+
 setInterval(() => goTo(tCurrent+1), 20000);
 
 /* ═══════════════════════════════════════════════
