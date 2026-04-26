@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentyn Halymov — Artist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:        #1a1208;
+  --cream:      #f5f0e8;
+  --ochre:      #c8892a;
+  --ochre-light:#e8b96a;
+  --rust:       #a34b2a;
+  --warm-gray:  #8a8070;
+  --light-bg:   #faf7f2;
+  --dark-bg:    #120e08;
+  --border:     rgba(26,18,8,0.12);
+  --border-md:  rgba(26,18,8,0.2);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', sans-serif;
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:  cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+#cursor-dot, #cursor-ring {
+  position: fixed; pointer-events: none; z-index: 9999;
+  border-radius: 50%; transform: translate(-50%, -50%);
+}
+#cursor-dot { width: 6px; height: 6px; background: var(--ochre); }
+#cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(200,137,42,0.5);
+  transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), border-color 0.3s;
+}
+body.cursor-hover #cursor-ring { width: 52px; height: 52px; border-color: rgba(200,137,42,0.8); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ═══ NAV ═══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3.5rem;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(245,240,232,0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  padding: 1rem 3.5rem; border-bottom: 0.5px solid var(--border);
+}
+.nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--ink); text-decoration: none; }
+.nav-logo span { color: var(--ochre); font-style: italic; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--warm-gray); text-decoration: none; position: relative; transition: color 0.25s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 0.5px; background: var(--ochre); transition: width 0.3s var(--ease-out);
+}
+.nav-links a:hover { color: var(--ochre); }
+.nav-links a:hover::after { width: 100%; }
+
+/* LANGUAGE SWITCHER */
+.lang-switcher {
+  display: flex; align-items: center; gap: 0;
+  border: 0.5px solid var(--border-md);
+  overflow: hidden; height: 28px;
+  margin-left: 1rem;
+}
+.lang-btn {
+  font-family: var(--font-body);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0 10px; height: 100%;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--warm-gray); transition: background 0.25s, color 0.25s;
+  position: relative;
+}
+.lang-btn.active {
+  background: var(--ink); color: var(--cream);
+}
+.lang-btn:not(.active):hover { color: var(--ochre); }
+.lang-divider { width: 0.5px; height: 100%; background: var(--border-md); flex-shrink: 0; }
+
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav-burger span { display: block; width: 24px; height: 0.5px; background: var(--ink); }
+
+/* ═══ HERO ═══ */
+.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+.hero-left { display: flex; flex-direction: column; justify-content: center; padding: 10rem 3.5rem 5rem; z-index: 2; }
+.hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 1.8rem; }
+.hero-eyebrow::before { content: ''; display: block; width: 36px; height: 0.5px; background: var(--ochre); }
+.hero-eyebrow span { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ochre); }
+.hero-title { font-family: var(--font-display); font-size: clamp(52px, 6vw, 80px); font-weight: 300; line-height: 1.05; color: var(--ink); margin-bottom: 1.8rem; }
+.hero-title em { font-style: italic; color: var(--ochre); }
+.hero-desc { font-size: 15px; line-height: 1.75; color: var(--warm-gray); max-width: 380px; margin-bottom: 2.8rem; font-weight: 300; }
+.hero-cta { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; background: var(--ink); color: var(--cream);
+  padding: 14px 32px; font-family: var(--font-body); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+  border: none; cursor: pointer; position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0; background: var(--rust);
+  transform: translateX(-100%); transition: transform 0.4s var(--ease-out); z-index: 0;
+}
+.btn-primary:hover::after { transform: translateX(0); }
+.btn-primary span { position: relative; z-index: 1; }
+.btn-ghost {
+  display: inline-block; background: transparent; color: var(--ink);
+  padding: 13px 31px; font-family: var(--font-body); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+  border: 0.5px solid var(--border-md); cursor: pointer; transition: border-color 0.3s, color 0.3s;
+}
+.btn-ghost:hover { border-color: var(--ochre); color: var(--ochre); }
+.hero-right { position: relative; overflow: hidden; background: var(--dark-bg); }
+.hero-right canvas { width: 100%; height: 100%; display: block; }
+.hero-scroll-hint {
+  position: absolute; bottom: 2.5rem; left: 3.5rem;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warm-gray);
+}
+.hero-scroll-hint::before {
+  content: ''; display: block; width: 0.5px; height: 48px; background: var(--ochre);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine { 0%,100% { transform: scaleY(1); opacity:1; } 50% { transform: scaleY(0.3); opacity:0.3; } }
+
+/* STATS */
+.stats-bar { display: grid; grid-template-columns: repeat(4,1fr); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); background: var(--light-bg); }
+.stat-item { padding: 2rem; text-align: center; border-right: 0.5px solid var(--border); position: relative; overflow: hidden; }
+.stat-item::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--ochre); transition: width 0.6s var(--ease-out); }
+.stat-item:hover::after { width: 100%; }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: var(--font-display); font-size: 42px; font-weight: 300; color: var(--ink); line-height: 1; display: block; }
+.stat-label { display: block; margin-top: 6px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-gray); }
+
+/* SECTIONS */
+.section { padding: 5rem 3.5rem; }
+.section-alt { background: var(--light-bg); }
+.section-dark { background: var(--dark-bg); }
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+.section-title { font-family: var(--font-display); font-size: clamp(36px, 4vw, 52px); font-weight: 300; line-height: 1.1; color: var(--ink); }
+.section-title em { font-style: italic; color: var(--ochre); }
+.section-title.light { color: var(--cream); }
+.section-link { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray); text-decoration: none; cursor: pointer; transition: color 0.25s; flex-shrink: 0; margin-left: 2rem; position: relative; }
+.section-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 0.5px; background: var(--ochre); transform: scaleX(0); transform-origin: right; transition: transform 0.3s var(--ease-out); }
+.section-link:hover { color: var(--ochre); }
+.section-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* GALLERY */
+.gallery-grid { display: grid; grid-template-columns: 5fr 3fr 3fr; grid-template-rows: 280px 280px; gap: 10px; }
+.gallery-item { position: relative; overflow: hidden; cursor: pointer; background: var(--dark-bg); }
+.gallery-item:first-child { grid-row: span 2; }
+.gallery-item canvas { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 0.7s var(--ease-out); }
+.gallery-item:hover canvas { transform: scale(1.04); }
+.gallery-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,14,8,0.9) 0%, transparent 50%); opacity: 0; transition: opacity 0.4s; display: flex; align-items: flex-end; padding: 1.5rem; }
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-meta-wrap { transform: translateY(8px); transition: transform 0.4s var(--ease-out); }
+.gallery-item:hover .gallery-meta-wrap { transform: none; }
+.gallery-name { font-family: var(--font-display); font-size: 18px; font-weight: 400; font-style: italic; color: var(--cream); display: block; }
+.gallery-technique { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.55); display: block; margin-top: 3px; }
+.gallery-price { display: inline-block; margin-top: 10px; font-size: 11px; color: var(--ochre-light); letter-spacing: 0.06em; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 5rem; align-items: center; }
+.about-portrait-wrap { position: relative; }
+.about-portrait { width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+.about-portrait canvas { width: 100%; height: 100%; display: block; }
+.about-portrait-frame { position: absolute; top: -16px; right: -16px; bottom: 16px; left: 16px; border: 0.5px solid var(--ochre); pointer-events: none; opacity: 0.4; transition: opacity 0.4s; }
+.about-portrait-wrap:hover .about-portrait-frame { opacity: 0.7; }
+.about-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ochre); }
+.about-eyebrow::before { content: ''; display: block; width: 28px; height: 0.5px; background: var(--ochre); }
+.about-title { font-family: var(--font-display); font-size: clamp(32px, 3.5vw, 48px); font-weight: 300; line-height: 1.15; margin-bottom: 1.8rem; }
+.about-body { font-size: 14px; line-height: 1.85; color: var(--warm-gray); font-weight: 300; margin-bottom: 1.2rem; }
+.about-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2rem; }
+.skill-tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border: 0.5px solid var(--border-md); color: var(--warm-gray); transition: border-color 0.25s, color 0.25s; }
+.skill-tag:hover { border-color: var(--ochre); color: var(--ochre); }
+
+/* SERVICES */
+.services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.service-card { padding: 2.5rem 2rem; border: 0.5px solid var(--border); position: relative; overflow: hidden; transition: border-color 0.3s; background: var(--cream); }
+.service-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--ochre); transform: scaleX(0); transition: transform 0.4s var(--ease-out); }
+.service-card:hover { border-color: rgba(200,137,42,0.3); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-num { font-family: var(--font-display); font-size: 56px; font-weight: 300; color: rgba(200,137,42,0.15); line-height: 1; margin-bottom: 1.2rem; }
+.service-name { font-family: var(--font-display); font-size: 22px; font-weight: 400; font-style: italic; margin-bottom: 0.8rem; color: var(--ink); }
+.service-desc { font-size: 13px; line-height: 1.75; color: var(--warm-gray); font-weight: 300; }
+.service-price { margin-top: 1.5rem; font-size: 13px; font-weight: 500; color: var(--ochre); }
+.service-divider { width: 28px; height: 0.5px; background: var(--ochre); margin: 1.2rem 0; }
+
+/* PROCESS */
+.process-steps { display: grid; grid-template-columns: repeat(4,1fr); position: relative; }
+.process-steps::before { content: ''; position: absolute; top: 28px; left: 0; right: 0; height: 0.5px; background: var(--border-md); }
+.process-step { padding: 0 2rem 0 0; }
+.step-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ochre); margin-bottom: 1.6rem; position: relative; z-index: 1; transition: transform 0.3s; }
+.process-step:hover .step-dot { transform: scale(1.5); }
+.step-num { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ochre); margin-bottom: 0.6rem; }
+.step-name { font-family: var(--font-display); font-size: 20px; font-weight: 400; font-style: italic; margin-bottom: 0.6rem; }
+.step-desc { font-size: 12px; line-height: 1.7; color: var(--warm-gray); font-weight: 300; }
+
+/* TESTIMONIALS */
+.testimonial-track { position: relative; overflow: hidden; }
+.testimonial-slides { display: flex; transition: transform 0.6s var(--ease-in-out); }
+.testimonial-slide { flex: 0 0 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.testimonial-quote { font-family: var(--font-display); font-size: clamp(22px,2.5vw,32px); font-weight: 300; font-style: italic; line-height: 1.5; color: var(--cream); position: relative; padding-left: 2rem; }
+.testimonial-quote::before { content: '\201C'; position: absolute; left: -0.1em; top: -0.2em; font-size: 5em; line-height: 0.8; color: var(--ochre); opacity: 0.3; font-style: normal; }
+.testimonial-info { padding-top: 1rem; }
+.testimonial-author { font-size: 14px; font-weight: 500; color: var(--cream); margin-bottom: 0.3rem; }
+.testimonial-role { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--warm-gray); }
+.testimonial-work { margin-top: 2rem; border: 0.5px solid rgba(245,240,232,0.1); padding: 1.2rem; display: inline-block; }
+.testimonial-work-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 4px; }
+.testimonial-work-name { font-family: var(--font-display); font-size: 16px; font-style: italic; color: var(--ochre-light); }
+.testimonial-controls { display: flex; align-items: center; gap: 1.5rem; margin-top: 3rem; }
+.testimonial-btn { width: 44px; height: 44px; border: 0.5px solid rgba(245,240,232,0.2); background: transparent; color: var(--cream); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: border-color 0.25s, color 0.25s; }
+.testimonial-btn:hover { border-color: var(--ochre); color: var(--ochre); }
+.t-dot { width: 20px; height: 0.5px; background: rgba(245,240,232,0.25); transition: background 0.3s, width 0.3s; cursor: pointer; }
+.t-dot.active { background: var(--ochre); width: 36px; }
+.testimonial-dots { display: flex; gap: 8px; }
+
+/* EXHIBITIONS */
+.exhibitions-list { border-top: 0.5px solid var(--border); }
+.exhibition-row { display: grid; grid-template-columns: 100px 1fr auto auto; gap: 2rem; align-items: center; padding: 1.4rem 0; border-bottom: 0.5px solid var(--border); transition: background 0.2s; }
+.exhibition-row:hover { background: rgba(200,137,42,0.03); }
+.exh-year { font-family: var(--font-display); font-size: 20px; color: var(--ochre); font-style: italic; }
+.exh-name { font-size: 15px; font-weight: 400; color: var(--ink); }
+.exh-place { font-size: 12px; color: var(--warm-gray); margin-top: 2px; }
+.exh-city { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray); text-align: right; }
+.exh-type { display: inline-block; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 0.5px solid var(--border-md); color: var(--warm-gray); }
+.exh-type.solo { border-color: var(--ochre); color: var(--ochre); }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 6rem; align-items: start; }
+.contact-tagline { font-family: var(--font-display); font-size: clamp(32px,3.5vw,48px); font-weight: 300; line-height: 1.2; margin-bottom: 2rem; }
+.contact-tagline em { font-style: italic; color: var(--ochre); }
+.contact-detail { display: flex; gap: 1rem; padding: 0.9rem 0; border-bottom: 0.5px solid var(--border); align-items: baseline; }
+.c-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-gray); min-width: 80px; }
+.c-val { font-size: 14px; color: var(--ink); font-weight: 300; }
+.form { display: flex; flex-direction: column; gap: 1.2rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray); }
+.form-control { background: var(--light-bg); border: 0.5px solid var(--border-md); padding: 12px 14px; font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--ink); outline: none; resize: none; transition: border-color 0.25s; appearance: none; }
+.form-control:focus { border-color: var(--ochre); }
+.form-control::placeholder { color: rgba(138,128,112,0.5); }
+.form-select { background: var(--light-bg); border: 0.5px solid var(--border-md); padding: 12px 14px; font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--ink); outline: none; cursor: pointer; transition: border-color 0.25s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8070' stroke-width='1' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.form-select:focus { border-color: var(--ochre); }
+.form-success { display: none; padding: 1rem 1.4rem; border: 0.5px solid var(--ochre); font-size: 13px; color: var(--ochre); background: rgba(200,137,42,0.05); }
+.form-success.show { display: block; }
+
+/* FOOTER */
+footer { background: var(--dark-bg); padding: 3rem 3.5rem; }
+.footer-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 2rem; border-bottom: 0.5px solid rgba(245,240,232,0.08); margin-bottom: 2rem; }
+.footer-logo { font-family: var(--font-display); font-size: 24px; font-weight: 300; color: var(--cream); text-decoration: none; }
+.footer-logo em { font-style: italic; color: var(--ochre); }
+.social-links { display: flex; gap: 2rem; }
+.social-link { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; cursor: pointer; transition: color 0.25s; }
+.social-link:hover { color: var(--ochre); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 11px; color: rgba(245,240,232,0.25); letter-spacing: 0.06em; }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245,240,232,0.25); text-decoration: none; cursor: pointer; transition: color 0.25s; }
+.footer-links a:hover { color: rgba(245,240,232,0.6); }
+
+/* LIGHTBOX */
+.lightbox { position: fixed; inset: 0; background: rgba(18,14,8,0.96); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox-inner { position: relative; max-width: 80vw; max-height: 85vh; transform: scale(0.94); transition: transform 0.4s var(--ease-out); }
+.lightbox.open .lightbox-inner { transform: scale(1); }
+.lightbox-inner canvas { display: block; max-width: 100%; max-height: 85vh; }
+.lightbox-caption { position: absolute; bottom: -3rem; left: 0; right: 0; text-align: center; }
+.lightbox-caption .gallery-name { font-size: 20px; color: var(--cream); }
+.lightbox-caption .gallery-technique { color: rgba(245,240,232,0.4); }
+.lightbox-close { position: fixed; top: 2rem; right: 2.5rem; font-size: 28px; color: rgba(245,240,232,0.5); cursor: pointer; line-height: 1; transition: color 0.25s; background: none; border: none; font-family: sans-serif; }
+.lightbox-close:hover { color: var(--ochre); }
+
+/* MOBILE NAV */
+.mobile-nav { position: fixed; inset: 0; background: var(--ink); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.mobile-nav.open { opacity: 1; pointer-events: all; }
+.mobile-nav a { font-family: var(--font-display); font-size: 40px; font-weight: 300; font-style: italic; color: var(--cream); text-decoration: none; transition: color 0.25s; }
+.mobile-nav a:hover { color: var(--ochre); }
+.mobile-nav-close { position: absolute; top: 2rem; right: 2rem; font-size: 28px; color: var(--cream); cursor: pointer; background: none; border: none; font-family: sans-serif; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  nav.scrolled { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 8rem 1.5rem 3rem; }
+  .hero-right { height: 50vw; }
+  .stats-bar { grid-template-columns: repeat(2,1fr); }
+  .section { padding: 3.5rem 1.5rem; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .gallery-item:first-child { grid-row: span 1; grid-column: span 2; height: 300px; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .process-steps::before { display: none; }
+  .testimonial-slide { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-top { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  .exhibition-row { grid-template-columns: 70px 1fr; gap: 1rem; }
+  .exh-city, .exh-type { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+  <a href="#gallery"      onclick="closeMobileNav()" data-i18n="nav.gallery"></a>
+  <a href="#about"        onclick="closeMobileNav()" data-i18n="nav.about"></a>
+  <a href="#services"     onclick="closeMobileNav()" data-i18n="nav.services"></a>
+  <a href="#exhibitions"  onclick="closeMobileNav()" data-i18n="nav.exhibitions"></a>
+  <a href="#contact"      onclick="closeMobileNav()" data-i18n="nav.contact"></a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Valentyn <span>Halymov</span></a>
+  <ul class="nav-links">
+    <li><a href="#gallery"     data-i18n="nav.gallery"></a></li>
+    <li><a href="#about"       data-i18n="nav.about"></a></li>
+    <li><a href="#services"    data-i18n="nav.services"></a></li>
+    <li><a href="#exhibitions" data-i18n="nav.exhibitions"></a></li>
+    <li><a href="#contact"     data-i18n="nav.contact"></a></li>
+    <li>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btnUk" onclick="setLang('uk')">УКР</button>
+        <div class="lang-divider"></div>
+        <button class="lang-btn" id="btnEn" onclick="setLang('en')">ENG</button>
+      </div>
+    </li>
+  </ul>
+  <div class="nav-burger" id="navBurger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow reveal"><span data-i18n="hero.eyebrow"></span></div>
+    <h1 class="hero-title reveal reveal-delay-1" data-i18n-html="hero.title"></h1>
+    <p class="hero-desc reveal reveal-delay-2" data-i18n="hero.desc"></p>
+    <div class="hero-cta reveal reveal-delay-3">
+      <a href="#gallery" class="btn-primary"><span data-i18n="hero.cta1"></span></a>
+      <a href="#contact" class="btn-ghost" data-i18n="hero.cta2"></a>
+    </div>
+  </div>
+  <div class="hero-right"><canvas id="heroCanvas"></canvas></div>
+  <div class="hero-scroll-hint reveal reveal-delay-4" data-i18n="hero.scroll"></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <span class="stat-num"><span class="counter" data-target="120">0</span>+</span>
+    <span class="stat-label" data-i18n="stats.works"></span>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <span class="stat-num"><span class="counter" data-target="14">0</span></span>
+    <span class="stat-label" data-i18n="stats.exhibitions"></span>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <span class="stat-num"><span class="counter" data-target="8">0</span></span>
+    <span class="stat-label" data-i18n="stats.years"></span>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <span class="stat-num"><span class="counter" data-target="40">0</span>+</span>
+    <span class="stat-label" data-i18n="stats.collections"></span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="section" id="gallery">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n-html="gallery.title"></h2>
+    <a class="section-link" data-i18n="gallery.all"></a>
+  </div>
+  <div class="gallery-grid reveal reveal-delay-1"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="section section-alt" id="about">
+  <div class="about-grid">
+    <div class="about-portrait-wrap reveal">
+      <div class="about-portrait"><canvas id="portraitCanvas"></canvas></div>
+      <div class="about-portrait-frame"></div>
+    </div>
+    <div class="about-content">
+      <div class="about-eyebrow reveal" data-i18n="about.eyebrow"></div>
+      <h2 class="about-title reveal reveal-delay-1" data-i18n-html="about.title"></h2>
+      <p class="about-body reveal reveal-delay-2" data-i18n="about.body1"></p>
+      <p class="about-body reveal reveal-delay-2" data-i18n="about.body2"></p>
+      <div class="about-skills reveal reveal-delay-3" id="skillsContainer"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n-html="services.title"></h2>
+  </div>
+  <div class="services-grid" id="servicesGrid"></div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section-alt">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n-html="process.title"></h2>
+  </div>
+  <div class="process-steps reveal reveal-delay-1" id="processSteps"></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section section-dark" id="testimonials">
+  <div class="section-header reveal">
+    <h2 class="section-title light" data-i18n-html="testimonials.title"></h2>
+  </div>
+  <div class="testimonial-track reveal reveal-delay-1">
+    <div class="testimonial-slides" id="testimonialSlides"></div>
+  </div>
+</section>
+
+<!-- EXHIBITIONS -->
+<section class="section" id="exhibitions">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-i18n-html="exhibitions.title"></h2>
+  </div>
+  <div class="exhibitions-list" id="exhibitionsList"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section-alt" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="about-eyebrow reveal" data-i18n="contact.eyebrow"></div>
+      <h2 class="contact-tagline reveal reveal-delay-1" data-i18n-html="contact.tagline"></h2>
+      <p class="about-body reveal reveal-delay-2" style="max-width:340px;" data-i18n="contact.desc"></p>
+      <div class="contact-detail reveal reveal-delay-2">
+        <span class="c-label" data-i18n="contact.emailLabel"></span>
+        <span class="c-val">valentyn@halymov.art</span>
+      </div>
+      <div class="contact-detail reveal reveal-delay-2">
+        <span class="c-label" data-i18n="contact.phoneLabel"></span>
+        <span class="c-val">+38 (067) 123‑45‑67</span>
+      </div>
+      <div class="contact-detail reveal reveal-delay-2">
+        <span class="c-label" data-i18n="contact.studioLabel"></span>
+        <span class="c-val" data-i18n="contact.studioVal"></span>
+      </div>
+      <div class="contact-detail reveal reveal-delay-2">
+        <span class="c-label">Instagram</span>
+        <span class="c-val">@valentyn.halymov</span>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <form class="form" id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" data-i18n="form.nameLabel"></label>
+            <input type="text" class="form-control" data-i18n-placeholder="form.namePlaceholder" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="form.subjectLabel"></label>
+          <select class="form-select form-control" id="formSubjectSelect"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-i18n="form.messageLabel"></label>
+          <textarea class="form-control" rows="5" data-i18n-placeholder="form.messagePlaceholder" required></textarea>
+        </div>
+        <div class="form-success" id="formSuccess" data-i18n="form.success"></div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start">
+          <span data-i18n="form.submit"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <a href="#" class="footer-logo">Valentyn <em>Halymov</em></a>
+    <div class="social-links">
+      <a class="social-link">Instagram</a>
+      <a class="social-link">Facebook</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy" data-i18n="footer.copy"></span>
+    <div class="footer-links">
+      <a data-i18n="footer.privacy"></a>
+      <a data-i18n="footer.terms"></a>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-inner">
+    <canvas id="lightboxCanvas"></canvas>
+    <div class="lightbox-caption">
+      <div class="gallery-name" id="lbName"></div>
+      <div class="gallery-technique" id="lbTech"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   TRANSLATIONS
+═══════════════════════════════════════════════ */
+const i18n = {
+  uk: {
+    'nav.gallery':      'Галерея',
+    'nav.about':        'Про мене',
+    'nav.services':     'Послуги',
+    'nav.exhibitions':  'Виставки',
+    'nav.contact':      'Контакт',
+    'hero.eyebrow':     'Живопис · Графіка · Ілюстрація',
+    'hero.title':       'Мистецтво,<br>що <em>зупиняє</em><br>час',
+    'hero.desc':        'Створюю роботи на межі абстракції та реальності. Кожне полотно — діалог між кольором, формою та внутрішньою тишею.',
+    'hero.cta1':        'Переглянути роботи',
+    'hero.cta2':        'Написати мені',
+    'hero.scroll':      'Гортати',
+    'stats.works':      'Завершених робіт',
+    'stats.exhibitions':'Виставок',
+    'stats.years':      'Років досвіду',
+    'stats.collections':'Приватних колекцій',
+    'gallery.title':    'Вибрані <em>роботи</em>',
+    'gallery.all':      'Вся галерея →',
+    'about.eyebrow':    'Про художника',
+    'about.title':      'Між мовчанням<br>та <em>кольором</em>',
+    'about.body1':      'Народився у Львові, навчався в Національній академії образотворчого мистецтва і архітектури у Києві. Моя практика зосереджена на дослідженні емоційного простору — там, де абстрактне і конкретне розчиняються одне в одному.',
+    'about.body2':      'Мої роботи зберігаються в приватних колекціях України, Польщі, Німеччини та США. Учасник міжнародних резиденцій у Відні та Берліні. Переможець Національного конкурсу молодих художників 2019.',
+    'about.skills':     ['Олія','Акрил','Акварель','Пастель','Графіка','Ілюстрація','Монотипія'],
+    'services.title':   'Що я <em>пропоную</em>',
+    'services.items': [
+      { num:'01', name:'Авторські картини',  desc:'Унікальні роботи на замовлення для вашого простору. Від першого ескізу до фінального полотна — повний творчий процес під вашу ідею та інтер\'єр.', price:'від 15 000 грн' },
+      { num:'02', name:'Ілюстрації',         desc:'Ілюстрації для книг, видань, брендингу та упаковки. Розробляю унікальний візуальний стиль, що відображає характер вашого проекту.', price:'від 3 000 грн' },
+      { num:'03', name:'Майстер-класи',      desc:'Індивідуальні та групові заняття живописом у Києві. Навчаю техніці олії та акварелі — від самих основ до авторського стилю.', price:'від 800 грн / заняття' },
+    ],
+    'process.title': 'Як це <em>відбувається</em>',
+    'process.steps': [
+      { num:'Крок 01', name:'Знайомство', desc:'Розповідаєте про ідею, простір, настрій. Я ставлю запитання, слухаю — і починаю відчувати образ.' },
+      { num:'Крок 02', name:'Ескіз',      desc:'Розробляю 2–3 варіанти композиції. Обираємо напрямок разом і вносимо правки до старту.' },
+      { num:'Крок 03', name:'Створення',  desc:'Працюю над роботою, надсилаю проміжні фото. Ви бачите процес і можете коригувати.' },
+      { num:'Крок 04', name:'Передача',   desc:'Упаковую та доставляю роботу. Підписую і надаю сертифікат автентичності.' },
+    ],
+    'testimonials.title': 'Що кажуть <em>клієнти</em>',
+    'testimonials.items': [
+      { quote:'Валентин створив картину, яка стала справжнім центром нашої вітальні. Він дивовижно вловив настрій — між теплом і меланхолією.', author:'Олена та Сергій Бондаренко', role:'Приватні колекціонери, Київ', workLabel:'Замовлена робота', workName:'«Охра осені», 120×80 см' },
+      { quote:'Ілюстрації для нашого видання перевершили всі очікування. Точне розуміння завдання і надзвичайна увага до деталей.',               author:'Андрій Ковальчук',        role:'Арт-директор, видавництво «Основи»', workLabel:'Проект',  workName:'Серія ілюстрацій, 24 сторінки' },
+      { quote:'Майстер-клас змінив моє ставлення до живопису. Валентин пояснює складні речі просто і надихає по-справжньому.',                     author:'Тетяна Мороз',            role:'Учениця, Київ', workLabel:'Формат', workName:'Індивідуальні заняття, олія' },
+    ],
+    'exhibitions.title': 'Виставки та <em>нагороди</em>',
+    'exhibitions.items': [
+      { year:'2024', name:'«Між кольором і тишею»',              place:'Мистецький арсенал',             city:'Київ, Україна',    type:'Персональна', solo:true },
+      { year:'2023', name:'Vienna Art Week — International',      place:'Künstlerhaus Wien',               city:'Відень, Австрія',  type:'Групова',     solo:false },
+      { year:'2022', name:'«Нова хвиля» — Сучасний живопис',     place:'Національний музей мистецтв',    city:'Київ, Україна',    type:'Групова',     solo:false },
+      { year:'2021', name:'Berlin Art Residency — Final Show',    place:'Galerie Nord',                    city:'Берлін, Німеччина',type:'Персональна', solo:true },
+      { year:'2019', name:'🏆 Нац. конкурс молодих художників — І премія', place:'Мінкульт України',    city:'Київ, Україна',    type:'Нагорода',    solo:true },
+    ],
+    'contact.eyebrow':    'Контакт',
+    'contact.tagline':    'Давайте створимо<br>щось <em>разом</em>',
+    'contact.desc':       'Якщо вас зацікавила моя робота або є ідея для спільного проекту — напишіть. Відповідаю протягом доби.',
+    'contact.emailLabel': 'Email',
+    'contact.phoneLabel': 'Телефон',
+    'contact.studioLabel':'Майстерня',
+    'contact.studioVal':  'Київ, Україна',
+    'form.nameLabel':     'Ваше ім\'я',
+    'form.namePlaceholder':'Іван Петренко',
+    'form.subjectLabel':  'Тема',
+    'form.subjectOptions':['Оберіть тему...','Замовлення картини','Ілюстрації','Майстер-клас','Готові роботи','Інше'],
+    'form.messageLabel':  'Повідомлення',
+    'form.messagePlaceholder':'Розкажіть про ваш запит або ідею...',
+    'form.success':       'Дякую! Ваше повідомлення надіслано. Відповім найближчим часом.',
+    'form.submit':        'Надіслати повідомлення',
+    'footer.copy':        '© 2026 Valentyn Halymov. Всі права захищено.',
+    'footer.privacy':     'Конфіденційність',
+    'footer.terms':       'Умови використання',
+    'works': [
+      { name:'«Вогонь осені»',         tech:'Олія · 120×80 см · 2024', price:'28 000 грн', seed:1, palette:['#8b3a10','#c8892a','#e8a030','#d4700a','#f5d080','#2c1205','#6b3010'] },
+      { name:'«Тиша перед світанком»', tech:'Акварель · 60×40 см · 2023', price:'9 500 грн', seed:2, palette:['#0d1a1f','#1a3040','#3a6080','#6b9ab8','#a8cce0','#c8e0f0','#2a4a60'] },
+      { name:'«Геометрія тіні»',       tech:'Графіка · 50×70 см · 2024', price:'7 000 грн', seed:3, palette:['#e0d8c8','#8b7a60','#c8b090','#2c1f0e','#a34b2a','#d4a070','#f0e8d0'] },
+      { name:'«Внутрішній всесвіт»',   tech:'Акрил · 80×80 см · 2023', price:'22 000 грн', seed:4, palette:['#1c1a2e','#3d2e6b','#6b4db8','#9b7de0','#c8b0f0','#2a2048','#4a3a80'] },
+      { name:'«Ранок у полі»',         tech:'Олія · 90×60 см · 2024', price:'18 000 грн', seed:5, palette:['#e8e0d0','#6b7c5e','#4a5c40','#a8c4e0','#f5e870','#3a4c30','#c8d8a0'] },
+    ],
+  },
+  en: {
+    'nav.gallery':      'Gallery',
+    'nav.about':        'About Me',
+    'nav.services':     'Services',
+    'nav.exhibitions':  'Exhibitions',
+    'nav.contact':      'Contact',
+    'hero.eyebrow':     'Painting · Graphic Art · Illustration',
+    'hero.title':       'Art that<br><em>stops</em><br>time',
+    'hero.desc':        'I create works on the edge of abstraction and reality. Each canvas is a dialogue between colour, form, and inner silence.',
+    'hero.cta1':        'View Works',
+    'hero.cta2':        'Contact Me',
+    'hero.scroll':      'Scroll',
+    'stats.works':      'Completed Works',
+    'stats.exhibitions':'Exhibitions',
+    'stats.years':      'Years of Experience',
+    'stats.collections':'Private Collections',
+    'gallery.title':    'Selected <em>works</em>',
+    'gallery.all':      'Full gallery →',
+    'about.eyebrow':    'About the Artist',
+    'about.title':      'Between silence<br>and <em>colour</em>',
+    'about.body1':      'Born in Lviv, studied at the National Academy of Fine Arts and Architecture in Kyiv. My practice focuses on exploring emotional space — where the abstract and the concrete dissolve into each other.',
+    'about.body2':      'My works are held in private collections in Ukraine, Poland, Germany and the USA. Participant of international residencies in Vienna and Berlin. Winner of the National Competition of Young Artists 2019.',
+    'about.skills':     ['Oil','Acrylic','Watercolour','Pastel','Graphics','Illustration','Monotype'],
+    'services.title':   'What I <em>offer</em>',
+    'services.items': [
+      { num:'01', name:'Commission Paintings', desc:'Unique works made to order for your space. From the first sketch to the final canvas — a complete creative process tailored to your idea and interior.', price:'from €380' },
+      { num:'02', name:'Illustrations',        desc:'Illustrations for books, publications, branding and packaging. I develop a unique visual style that reflects the character of your project.', price:'from €75' },
+      { num:'03', name:'Masterclasses',        desc:'Individual and group painting sessions. I teach oil and watercolour techniques — from the very basics to a developed personal style.', price:'from €20 / session' },
+    ],
+    'process.title': 'How it <em>works</em>',
+    'process.steps': [
+      { num:'Step 01', name:'Discovery', desc:'You share your idea, space, and mood. I ask questions, listen — and begin to sense the image.' },
+      { num:'Step 02', name:'Sketch',    desc:'I develop 2–3 composition options. We choose a direction together and refine before starting.' },
+      { num:'Step 03', name:'Creation',  desc:'I work on the piece and send progress photos. You see the process and can give feedback.' },
+      { num:'Step 04', name:'Handover',  desc:'I package and deliver the work, signed with a certificate of authenticity.' },
+    ],
+    'testimonials.title': 'What <em>clients</em> say',
+    'testimonials.items': [
+      { quote:'Valentyn created a painting that became the true centrepiece of our living room. He captured the mood so precisely — between warmth and melancholy.', author:'Olena & Serhiy Bondarenko', role:'Private collectors, Kyiv', workLabel:'Commissioned work', workName:'"Ochre of Autumn", 120×80 cm' },
+      { quote:'The illustrations for our publication exceeded all expectations. Precise understanding of the task and extraordinary attention to detail.',              author:'Andriy Kovalchuk',        role:'Art Director, "Osnovy" Publishing', workLabel:'Project', workName:'Illustration series, 24 pages' },
+      { quote:'The masterclass changed my relationship with painting. Valentyn explains complex things simply and inspires genuinely.',                               author:'Tetiana Moroz',           role:'Student, Kyiv', workLabel:'Format', workName:'Individual sessions, oil' },
+    ],
+    'exhibitions.title': 'Exhibitions & <em>awards</em>',
+    'exhibitions.items': [
+      { year:'2024', name:'"Between Colour and Silence"',       place:'Mystetskyi Arsenal',             city:'Kyiv, Ukraine',   type:'Solo',  solo:true },
+      { year:'2023', name:'Vienna Art Week — International',    place:'Künstlerhaus Wien',               city:'Vienna, Austria', type:'Group', solo:false },
+      { year:'2022', name:'"New Wave" — Contemporary Painting', place:'National Museum of Fine Arts',   city:'Kyiv, Ukraine',   type:'Group', solo:false },
+      { year:'2021', name:'Berlin Art Residency — Final Show',  place:'Galerie Nord',                    city:'Berlin, Germany', type:'Solo',  solo:true },
+      { year:'2019', name:'🏆 National Competition — 1st Prize', place:'Ministry of Culture of Ukraine', city:'Kyiv, Ukraine',   type:'Award', solo:true },
+    ],
+    'contact.eyebrow':    'Contact',
+    'contact.tagline':    'Let\'s create<br>something <em>together</em>',
+    'contact.desc':       'If you are interested in my work or have an idea for a collaboration — feel free to reach out. I typically respond within 24 hours.',
+    'contact.emailLabel': 'Email',
+    'contact.phoneLabel': 'Phone',
+    'contact.studioLabel':'Studio',
+    'contact.studioVal':  'Kyiv, Ukraine',
+    'form.nameLabel':     'Your name',
+    'form.namePlaceholder':'John Smith',
+    'form.subjectLabel':  'Subject',
+    'form.subjectOptions':['Select a category...','Commission a Painting','Project Illustrations','Masterclass','Available Works','Other'],
+    'form.messageLabel':  'Message',
+    'form.messagePlaceholder':'Tell me about your request or idea...',
+    'form.success':       'Thank you! Your message has been sent. I will get back to you shortly.',
+    'form.submit':        'Send Message',
+    'footer.copy':        '© 2026 Valentyn Halymov. All rights reserved.',
+    'footer.privacy':     'Privacy Policy',
+    'footer.terms':       'Terms of Use',
+    'works': [
+      { name:'"Autumn Fire"',       tech:'Oil · 120×80 cm · 2024', price:'€700', seed:1, palette:['#8b3a10','#c8892a','#e8a030','#d4700a','#f5d080','#2c1205','#6b3010'] },
+      { name:'"Silence at Dawn"',   tech:'Watercolour · 60×40 cm · 2023', price:'€240', seed:2, palette:['#0d1a1f','#1a3040','#3a6080','#6b9ab8','#a8cce0','#c8e0f0','#2a4a60'] },
+      { name:'"Geometry of Shadow"',tech:'Graphics · 50×70 cm · 2024', price:'€180', seed:3, palette:['#e0d8c8','#8b7a60','#c8b090','#2c1f0e','#a34b2a','#d4a070','#f0e8d0'] },
+      { name:'"Inner Universe"',    tech:'Acrylic · 80×80 cm · 2023', price:'€560', seed:4, palette:['#1c1a2e','#3d2e6b','#6b4db8','#9b7de0','#c8b0f0','#2a2048','#4a3a80'] },
+      { name:'"Morning in the Field"',tech:'Oil · 90×60 cm · 2024', price:'€460', seed:5, palette:['#e8e0d0','#6b7c5e','#4a5c40','#a8c4e0','#f5e870','#3a4c30','#c8d8a0'] },
+    ],
+  }
+};
+
+/* ═══════════════════════════════════════════════
+   I18N ENGINE
+═══════════════════════════════════════════════ */
+let currentLang = localStorage.getItem('lang') || 'uk';
+
+function t(key) {
+  return i18n[currentLang][key] ?? i18n['uk'][key] ?? key;
+}
+
+function applyTranslations() {
+  // Simple text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  // HTML (for em tags)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+
+  // Form subject options
+  const sel = document.getElementById('formSubjectSelect');
+  if (sel) {
+    const opts = t('form.subjectOptions');
+    sel.innerHTML = opts.map((o,i) => `<option value="${i===0?'':i}">${o}</option>`).join('');
+  }
+
+  // Skills
+  const skillsEl = document.getElementById('skillsContainer');
+  if (skillsEl) {
+    skillsEl.innerHTML = t('about.skills').map(s => `<span class="skill-tag">${s}</span>`).join('');
+  }
+
+  // Services
+  buildServices();
+
+  // Process
+  buildProcess();
+
+  // Testimonials
+  buildTestimonials();
+
+  // Exhibitions
+  buildExhibitions();
+
+  // Gallery (just updates names/tech on existing items or rebuilds)
+  buildGallery();
+
+  // Lang buttons
+  document.getElementById('btnUk').classList.toggle('active', currentLang === 'uk');
+  document.getElementById('btnEn').classList.toggle('active', currentLang === 'en');
+
+  // html lang attr
+  document.documentElement.lang = currentLang;
+}
+
+function setLang(lang) {
+  if (lang === currentLang) return;
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+
+  // Animate transition
+  document.body.style.transition = 'opacity 0.25s';
+  document.body.style.opacity = '0';
+  setTimeout(() => {
+    applyTranslations();
+    document.body.style.opacity = '1';
+    setTimeout(() => { document.body.style.transition = ''; }, 300);
+  }, 250);
+}
+
+/* ═══════════════════════════════════════════════
+   DYNAMIC BUILDERS
+═══════════════════════════════════════════════ */
+function buildServices() {
+  const grid = document.getElementById('servicesGrid');
+  if (!grid) return;
+  const items = t('services.items');
+  grid.innerHTML = items.map((s, i) => `
+    <div class="service-card ${i>0?'reveal reveal-delay-'+i:'reveal'}">
+      <div class="service-num">${s.num}</div>
+      <div class="service-name">${s.name}</div>
+      <div class="service-divider"></div>
+      <p class="service-desc">${s.desc}</p>
+      <div class="service-price">${s.price}</div>
+    </div>`).join('');
+  // re-observe new elements
+  grid.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+}
+
+function buildProcess() {
+  const el = document.getElementById('processSteps');
+  if (!el) return;
+  el.innerHTML = t('process.steps').map(s => `
+    <div class="process-step">
+      <div class="step-dot"></div>
+      <div class="step-num">${s.num}</div>
+      <div class="step-name">${s.name}</div>
+      <p class="step-desc">${s.desc}</p>
+    </div>`).join('');
+}
+
+function buildTestimonials() {
+  const slides = document.getElementById('testimonialSlides');
+  if (!slides) return;
+  const items = t('testimonials.items');
+  slides.innerHTML = items.map((item, i) => `
+    <div class="testimonial-slide">
+      <div>
+        <blockquote class="testimonial-quote">${item.quote}</blockquote>
+        ${i === 0 ? `<div class="testimonial-controls">
+          <button class="testimonial-btn" id="prevBtn">←</button>
+          <div class="testimonial-dots" id="tDots"></div>
+          <button class="testimonial-btn" id="nextBtn">→</button>
+        </div>` : ''}
+      </div>
+      <div class="testimonial-info">
+        <div class="testimonial-author">${item.author}</div>
+        <div class="testimonial-role">${item.role}</div>
+        <div class="testimonial-work">
+          <div class="testimonial-work-label">${item.workLabel}</div>
+          <div class="testimonial-work-name">${item.workName}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Rebuild slider state
+  tCurrent = 0;
+  const dots = document.getElementById('tDots');
+  if (dots) {
+    dots.innerHTML = items.map((_, i) =>
+      `<div class="t-dot${i===0?' active':''}" onclick="goTo(${i})"></div>`).join('');
+  }
+  const prev = document.getElementById('prevBtn');
+  const next = document.getElementById('nextBtn');
+  if (prev) prev.onclick = () => goTo(tCurrent - 1);
+  if (next) next.onclick = () => goTo(tCurrent + 1);
+
+  // cursor hover
+  document.querySelectorAll('.testimonial-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+}
+
+function buildExhibitions() {
+  const list = document.getElementById('exhibitionsList');
+  if (!list) return;
+  list.innerHTML = t('exhibitions.items').map(e => `
+    <div class="exhibition-row">
+      <div class="exh-year">${e.year}</div>
+      <div>
+        <div class="exh-name">${e.name}</div>
+        <div class="exh-place">${e.place}</div>
+      </div>
+      <div class="exh-city">${e.city}</div>
+      <div class="exh-type${e.solo?' solo':''}">${e.type}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════════ */
+let galleryBuilt = false;
+function buildGallery() {
+  const grid = document.querySelector('.gallery-grid');
+  if (!grid) return;
+  const works = t('works');
+
+  if (!galleryBuilt) {
+    // First build — create canvases
+    grid.innerHTML = '';
+    works.forEach((w, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      if (i === 0) item.style.gridRow = 'span 2';
+
+      const cv = document.createElement('canvas');
+      cv.dataset.workIndex = i;
+      item.appendChild(cv);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'gallery-overlay';
+      overlay.innerHTML = `<div class="gallery-meta-wrap">
+        <span class="gallery-name">${w.name}</span>
+        <span class="gallery-technique">${w.tech}</span>
+        <span class="gallery-price">${w.price}</span>
+      </div>`;
+      item.appendChild(overlay);
+
+      item.addEventListener('click', () => openLightbox(i));
+      item.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      item.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      grid.appendChild(item);
+
+      requestAnimationFrame(() => {
+        createPainting(cv, { seed: w.seed * 77, palette: w.palette, strokes: i===0?220:140 });
+      });
+    });
+    galleryBuilt = true;
+  } else {
+    // Language changed — just update text overlays
+    grid.querySelectorAll('.gallery-item').forEach((item, i) => {
+      const w = works[i];
+      if (!w) return;
+      const overlay = item.querySelector('.gallery-overlay');
+      if (overlay) overlay.innerHTML = `<div class="gallery-meta-wrap">
+        <span class="gallery-name">${w.name}</span>
+        <span class="gallery-technique">${w.tech}</span>
+        <span class="gallery-price">${w.price}</span>
+      </div>`;
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   PAINTING ENGINE
+═══════════════════════════════════════════════ */
+function createPainting(canvas, opts = {}) {
+  const { bg='#2c1f0e', palette=['#8b4513','#c8892a','#a34b2a'], strokes=180, seed=42, w:fw=null, h:fh=null } = opts;
+  let rng = seed;
+  function rand() { rng ^= rng<<13; rng ^= rng>>17; rng ^= rng<<5; return (rng>>>0)/0xFFFFFFFF; }
+  function rr(a,b) { return a+rand()*(b-a); }
+  function rc() { return palette[Math.floor(rand()*palette.length)]; }
+  const W = fw||canvas.offsetWidth||600, H = fh||canvas.offsetHeight||600;
+  canvas.width=W; canvas.height=H;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  for(let i=0;i<6;i++){ctx.save();ctx.globalAlpha=rr(0.2,0.5);ctx.fillStyle=rc();ctx.beginPath();ctx.ellipse(rr(0,W),rr(0,H),rr(W*0.2,W*0.55),rr(H*0.15,H*0.5),rr(0,Math.PI*2),0,Math.PI*2);ctx.fill();ctx.restore();}
+  for(let i=0;i<strokes;i++){const x=rr(-20,W+20),y=rr(-20,H+20),len=rr(20,180),angle=rr(0,Math.PI*2),thick=rr(1.5,18),color=rc();ctx.save();ctx.globalAlpha=rr(0.15,0.65);ctx.strokeStyle=color;ctx.lineWidth=thick;ctx.lineCap='round';ctx.translate(x,y);ctx.rotate(angle);ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(rr(-len*0.5,len*0.5),rr(-thick*3,thick*3),len,rr(-thick*0.5,thick*0.5));ctx.stroke();ctx.restore();}
+  for(let i=0;i<40;i++){ctx.save();ctx.globalAlpha=rr(0.08,0.35);ctx.strokeStyle=i%3===0?'#f5e8c0':'#e8c97a';ctx.lineWidth=rr(0.5,2.5);ctx.lineCap='round';ctx.beginPath();const x=rr(0,W),y=rr(0,H);ctx.moveTo(x,y);ctx.lineTo(x+rr(-60,60),y+rr(-60,60));ctx.stroke();ctx.restore();}
+  const id=ctx.getImageData(0,0,W,H),data=id.data;
+  for(let i=0;i<data.length;i+=4){const n=(rand()-0.5)*18;data[i]=Math.max(0,Math.min(255,data[i]+n));data[i+1]=Math.max(0,Math.min(255,data[i+1]+n));data[i+2]=Math.max(0,Math.min(255,data[i+2]+n));}
+  ctx.putImageData(id,0,0);
+  ctx.save();ctx.globalAlpha=0.22;ctx.font='italic 11px Georgia,serif';ctx.fillStyle='#f5e8c0';ctx.fillText('VH '+(2023+Math.floor(rand()*2)),16,H-14);ctx.restore();
+}
+
+function initHeroCanvas() {
+  const cv = document.getElementById('heroCanvas'), p = cv.parentElement;
+  cv.width=p.offsetWidth||700; cv.height=p.offsetHeight||700;
+  createPainting(cv,{seed:999,strokes:280,palette:['#8b4513','#c8892a','#a34b2a','#e8b96a','#d4700a','#4a2010','#6b3a1f','#f5d080'],w:cv.width,h:cv.height});
+}
+function initPortraitCanvas() {
+  const cv=document.getElementById('portraitCanvas'),W=cv.offsetWidth||400,H=cv.offsetHeight||Math.round(W*4/3);
+  createPainting(cv,{bg:'#3d2810',seed:555,strokes:160,palette:['#c8a070','#a07050','#8b5a30','#e8c4a0','#d4904a','#2c1f0e','#6b4030','#f5e0c0'],w:W,h:H});
+  const ctx=cv.getContext('2d');ctx.save();ctx.globalAlpha=0.18;ctx.fillStyle='#e8c4a0';ctx.beginPath();ctx.ellipse(W*0.5,H*0.35,W*0.22,H*0.26,0,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+
+/* ═══════════════════════════════════════════════
+   LIGHTBOX
+═══════════════════════════════════════════════ */
+function openLightbox(workIndex) {
+  const works = t('works');
+  const w = works[workIndex];
+  const lb = document.getElementById('lightbox');
+  const cv = document.getElementById('lightboxCanvas');
+  document.getElementById('lbName').textContent = w.name;
+  document.getElementById('lbTech').textContent = w.tech;
+  const S = Math.min(window.innerWidth*0.75, window.innerHeight*0.8, 800);
+  createPainting(cv,{seed:w.seed*77+1,palette:w.palette,strokes:300,w:Math.round(S),h:Math.round(S*0.75)});
+  lb.classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target===document.getElementById('lightbox')) closeLightbox(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIAL SLIDER
+═══════════════════════════════════════════════ */
+let tCurrent = 0;
+function goTo(n) {
+  const slides = document.querySelectorAll('.testimonial-slide');
+  tCurrent = (n + slides.length) % slides.length;
+  document.getElementById('testimonialSlides').style.transform = `translateX(-${tCurrent*100}%)`;
+  document.querySelectorAll('.t-dot').forEach((d,i) => d.classList.toggle('active', i===tCurrent));
+}
+setInterval(() => goTo(tCurrent+1), 5000);
+
+/* ═══════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════ */
+const dot=document.getElementById('cursor-dot'), ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function animCursor(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCursor);})();
+function addHover(selector){document.querySelectorAll(selector).forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});}
+addHover('a, button, .stat-item');
+
+/* NAV SCROLL */
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60));
+
+/* MOBILE NAV */
+function openMobileNav(){document.getElementById('mobileNav').classList.add('open');}
+function closeMobileNav(){document.getElementById('mobileNav').classList.remove('open');}
+document.getElementById('mobileNavClose').onclick=closeMobileNav;
+
+/* REVEAL */
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}});
+},{threshold:0.12});
+
+/* COUNTER */
+const counterObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.target,dur=1400,start=performance.now();
+    (function tick(now){const p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target);if(p<1)requestAnimationFrame(tick);})(start);
+    counterObs.unobserve(el);
+  });
+},{threshold:0.5});
+
+/* FORM */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.querySelector('span').textContent = currentLang==='uk'?'Надсилання...':'Sending...';
+  setTimeout(()=>{
+    document.getElementById('formSuccess').textContent = t('form.success');
+    document.getElementById('formSuccess').classList.add('show');
+    e.target.reset();
+    btn.querySelector('span').textContent = t('form.submit');
+  },1200);
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  applyTranslations();
+  setTimeout(initHeroCanvas, 50);
+  setTimeout(initPortraitCanvas, 100);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObs.observe(el);
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.9) el.classList.add('visible');
+  });
+  document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+});
+
+window.addEventListener('resize', () => { initHeroCanvas(); initPortraitCanvas(); });
+</script>
+</body>
+</html>
